@@ -1,6 +1,12 @@
-
+<p align="center">
+	<br>
+	<img src="logo.png" width="500">
+	<br>
+</p>
 
 # Vysma
+
+> Collections of pure utilities help developer to plug and build web application in a reactive, declarative, predictable dev workflow.
 
 This project was generated using [Nx](https://nx.dev).
 
@@ -78,8 +84,6 @@ Run `nx graph` to see a diagram of the dependencies of your projects.
 ## Further help
 
 Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
 
 ## ☁ Nx Cloud
 
