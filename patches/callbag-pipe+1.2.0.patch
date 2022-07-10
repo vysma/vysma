@@ -1,0 +1,9 @@
+diff --git a/node_modules/callbag-pipe/readme.js b/node_modules/callbag-pipe/readme.js
+index 5e1cb8f..a570236 100644
+--- a/node_modules/callbag-pipe/readme.js
++++ b/node_modules/callbag-pipe/readme.js
+@@ -114,3 +114,4 @@ function pipe(...cbs) {
+ }
+ 
+ module.exports = pipe;
++module.exports.default = pipe;

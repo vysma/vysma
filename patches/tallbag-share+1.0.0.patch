@@ -1,0 +1,9 @@
+diff --git a/node_modules/tallbag-share/index.cjs.js b/node_modules/tallbag-share/index.cjs.js
+index fd830e6..f7118ef 100644
+--- a/node_modules/tallbag-share/index.cjs.js
++++ b/node_modules/tallbag-share/index.cjs.js
+@@ -41,3 +41,4 @@ const share = source => {
+ };
+ 
+ module.exports = share;
++module.exports.default = share;

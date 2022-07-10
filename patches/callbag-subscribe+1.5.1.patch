@@ -1,0 +1,9 @@
+diff --git a/node_modules/callbag-subscribe/index.cjs.js b/node_modules/callbag-subscribe/index.cjs.js
+index dfca49e..86bd362 100644
+--- a/node_modules/callbag-subscribe/index.cjs.js
++++ b/node_modules/callbag-subscribe/index.cjs.js
+@@ -26,3 +26,4 @@ const subscribe = (listener = {}) => source => {
+ };
+ 
+ module.exports = subscribe;
++module.exports.default = subscribe;

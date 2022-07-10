@@ -2,10 +2,18 @@
   "name": "vysma",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "prepare": "patch-package"
+  },
   "private": true,
   "dependencies": {
     "@swc/helpers": "~0.3.3",
+    "callbag-pipe": "1.2.0",
+    "callbag-subscribe": "1.5.1",
+    "tallbag-combine": "1.0.0",
+    "tallbag-filter": "1.0.0",
+    "tallbag-share": "1.0.0",
+    "tallbag-take": "1.0.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -14,6 +22,7 @@
     "@nrwl/jest": "14.3.6",
     "@nrwl/js": "14.3.6",
     "@nrwl/linter": "14.3.6",
+    "@nrwl/node": "^14.4.0",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/workspace": "14.3.6",
     "@swc/cli": "~0.1.55",
@@ -27,7 +36,9 @@
     "eslint-config-prettier": "8.1.0",
     "jest": "27.5.1",
     "nx": "14.3.6",
+    "patch-package": "6.4.7",
     "prettier": "^2.6.2",
+    "tallbag-interval": "1.0.0",
     "ts-jest": "27.1.4",
     "ts-node": "~10.8.0",
     "typescript": "~4.7.2"

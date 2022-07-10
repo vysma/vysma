@@ -1,0 +1,9 @@
+diff --git a/node_modules/tallbag-interval/index.cjs.js b/node_modules/tallbag-interval/index.cjs.js
+index 892170d..ea6c284 100644
+--- a/node_modules/tallbag-interval/index.cjs.js
++++ b/node_modules/tallbag-interval/index.cjs.js
+@@ -17,3 +17,4 @@ const interval = period => (start, sink) => {
+ };
+ 
+ module.exports = interval;
++module.exports.default = interval;

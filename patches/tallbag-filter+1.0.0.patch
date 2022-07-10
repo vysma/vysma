@@ -1,0 +1,9 @@
+diff --git a/node_modules/tallbag-filter/readme.js b/node_modules/tallbag-filter/readme.js
+index 17210b8..8bf4e98 100644
+--- a/node_modules/tallbag-filter/readme.js
++++ b/node_modules/tallbag-filter/readme.js
+@@ -41,3 +41,4 @@ const filter = condition => source => (start, sink) => {
+ };
+ 
+ module.exports = filter;
++module.exports.default = filter;

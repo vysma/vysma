@@ -1,0 +1,9 @@
+diff --git a/node_modules/tallbag-take/index.js b/node_modules/tallbag-take/index.js
+index 37a2abd..a1069bc 100644
+--- a/node_modules/tallbag-take/index.js
++++ b/node_modules/tallbag-take/index.js
+@@ -30,3 +30,4 @@ const take = max => source => (start, sink) => {
+ };
+ 
+ module.exports = take;
++module.exports.default = take;

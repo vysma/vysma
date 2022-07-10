@@ -1,0 +1,9 @@
+diff --git a/node_modules/tallbag-combine/readme.js b/node_modules/tallbag-combine/readme.js
+index 45ba6e3..aaca8c1 100644
+--- a/node_modules/tallbag-combine/readme.js
++++ b/node_modules/tallbag-combine/readme.js
+@@ -83,3 +83,4 @@ const combine = (...sources) => (start, sink) => {
+ };
+ 
+ module.exports = combine;
++module.exports.default = combine;
