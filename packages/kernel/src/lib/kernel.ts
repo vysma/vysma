@@ -1,11 +1,12 @@
 import { UnwrapSink, UnwrapSource } from './tallbag';
 
+import { VysmaSource } from './model';
 import pipe from 'callbag-pipe';
 import share from 'tallbag-share';
 import subscribe from 'callbag-subscribe';
 
 export interface KernelConfiguration {
-  sources: UnwrapSource<any>[];
+  sources: VysmaSource[];
   triggers: UnwrapSink<any>[];
 }
 
@@ -18,15 +19,16 @@ export function kernel(config: KernelConfiguration): Kernel {
 export class Kernel {
   public initialized = false;
   private _sources: UnwrapSource<any>[] = [];
-  private _streams: any[];
+  private _streams: any[] = [];
 
   constructor(public config: KernelConfiguration) {
-    this.bootstrap();
+    console.log(`Bootstraped!`);
+    // this.bootstrap();
   }
 
   bootstrap() {
     const sources = this.config.sources;
-    this._sources = sources.map((src) => share(src as any));
+    this._sources = sources.map((src) => share(src.sourceRef as any));
     this._streams = this._sources.map((src) =>
       pipe(
         src as any,

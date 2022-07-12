@@ -1,0 +1,13 @@
+diff --git a/node_modules/shadow-callbag/index.ts b/node_modules/shadow-callbag/index.ts
+index ad03eaf..db82821 100644
+--- a/node_modules/shadow-callbag/index.ts
++++ b/node_modules/shadow-callbag/index.ts
+@@ -59,7 +59,7 @@ export default function makeShadow(
+         });
+       } else if (sourceOrSources) {
+         const source = sourceOrSources;
+-        source(0, (t: 0 | 1 | 2, d: any) => {
++        (source as any)(0, (t: 0 | 1 | 2, d: any) => {
+           if (t === 0) {
+             const talkback = d;
+             if (!firstSent) talkback(1);
