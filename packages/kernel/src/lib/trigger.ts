@@ -20,12 +20,17 @@ export function createTrigger(config: TriggerConfiguration) {
     const subscription = forEach(config.action)(
       pipe(
         source as any,
-        // Check for appropriate event by filtering the `eventName` and the trigger condition
+        // Check for appropriate event by filtering the `eventName`
         filter((eventPayload: VysmaEvent<any>) => {
-          const { eventName, payload } = config.event(eventPayload);
-          return eventName === eventPayload.eventName && config.condition
-            ? config.condition(payload)
-            : true;
+          const { eventName } = config.event(eventPayload);
+          return eventName === eventPayload.eventName;
+        }),
+        // Check for trigger condition
+        filter((eventPayload: VysmaEvent<any>) => {
+          if (config.condition) {
+            return config.condition(eventPayload.payload);
+          }
+          return true;
         })
       )
     );

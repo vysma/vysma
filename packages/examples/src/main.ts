@@ -42,6 +42,7 @@ const LogWhenEven = createTrigger({
 
 const LogWhenOdd = createTrigger({
   event: whenOdd,
+  condition: (x) => x.oddData > 10,
   action: (x) => console.log(`LogWhenOdd: ${JSON.stringify(x)}`),
 });
 
