@@ -13,6 +13,7 @@
     "callbag-subscribe": "1.5.1",
     "tallbag-combine": "1.0.0",
     "tallbag-filter": "1.0.0",
+    "tallbag-for-each": "1.0.0",
     "tallbag-share": "1.0.0",
     "tallbag-take": "1.0.0",
     "tslib": "^2.3.0"

@@ -13,7 +13,7 @@ export interface VysmaSourceRef<T> {
   current: T;
 }
 
-export interface VysmaSourceInput<C, R, E extends UnwrapEventReference<any>[]> {
+export interface VysmaSourceInput<C, R> {
   name?: string;
   id: string;
   events: VysmaEventConfig<any>[];

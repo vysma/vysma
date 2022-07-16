@@ -4322,6 +4322,14 @@ tallbag-filter@1.0.0:
     shadow-callbag "~1.0.0"
     tallbag "~1.2.0"
 
+tallbag-for-each@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tallbag-for-each/-/tallbag-for-each-1.0.0.tgz#d9a04c4681a1eacba38334c830f62cd140710a9e"
+  integrity sha512-/62+/lgey0aoR8JM9hK2EU4Ym26yGoqHHH+phUCOAV0nNkIcIxD5lHTIXGDXH93zHkpUkfe3fubFiie9Y8vneg==
+  dependencies:
+    shadow-callbag "~1.0.0"
+    tallbag "~1.2.0"
+
 tallbag-interval@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/tallbag-interval/-/tallbag-interval-1.0.0.tgz#0afe6362daa6864dae9ab102ee8fb4a3cf31ed72"

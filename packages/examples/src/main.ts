@@ -1,12 +1,9 @@
 import {
-  UnwrapEventReference,
   createEvent,
   createSource,
   createTrigger,
   kernel,
 } from '@vysma/kernel';
-
-import take from 'tallbag-take';
 
 interface ClockEvenEvent {
   evenData: number;
@@ -16,22 +13,18 @@ interface ClockOddEvent {
   oddData: number;
 }
 
-const wenEven = createEvent<ClockEvenEvent>('even');
-const wenOdd = createEvent<ClockOddEvent>('odd');
+const whenEven = createEvent<ClockEvenEvent>('even');
+const whenOdd = createEvent<ClockOddEvent>('odd');
 
-type TikTokEventTypes = [
-  UnwrapEventReference<typeof wenEven>,
-  UnwrapEventReference<typeof wenOdd>
-];
-
-const TikTokSource = createSource<number, NodeJS.Timer, TikTokEventTypes>({
+const TikTokSource = createSource<number, NodeJS.Timer>({
   name: 'TikTok',
   id: 'com.vysma.tiktok',
-  events: [wenEven, wenOdd],
-  init: (duration: number, [onEven, onOdd]) => {
+  events: [whenEven, whenOdd],
+  init: (duration, [onEven, onOdd]) => {
     let counter = 0;
     const current = setInterval(() => {
       counter = counter + 1;
+      console.log('counter:', counter);
       if (counter % 2 === 0) {
         onEven({ evenData: counter });
       } else {
@@ -43,16 +36,16 @@ const TikTokSource = createSource<number, NodeJS.Timer, TikTokEventTypes>({
 });
 
 const LogWhenEven = createTrigger({
-  event: wenEven,
-  action: take(1),
+  event: whenEven,
+  action: (x) => console.log(`LogWhenEven: ${JSON.stringify(x)}`),
 });
 
 const LogWhenOdd = createTrigger({
-  event: wenOdd,
-  action: take(2),
+  event: whenOdd,
+  action: (x) => console.log(`LogWhenOdd: ${JSON.stringify(x)}`),
 });
 
 kernel({
-  sources: [TikTokSource],
+  sources: [TikTokSource(1000)],
   triggers: [LogWhenEven, LogWhenOdd],
-});
+}).run();

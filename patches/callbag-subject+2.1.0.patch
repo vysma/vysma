@@ -1,0 +1,9 @@
+diff --git a/node_modules/callbag-subject/index.js b/node_modules/callbag-subject/index.js
+index 8c933f2..c3a28db 100644
+--- a/node_modules/callbag-subject/index.js
++++ b/node_modules/callbag-subject/index.js
+@@ -27,3 +27,4 @@ function makeSubject() {
+ }
+ 
+ module.exports = makeSubject;
++module.exports.default = makeSubject;

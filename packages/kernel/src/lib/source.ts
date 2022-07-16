@@ -1,30 +1,25 @@
-import { UnwrapEventReference, VysmaEventCallback, makeEvent } from './event';
+import { VysmaEventCallback, makeEvent } from './event';
 
-import { VysmaSourceInput } from './model';
+import { VysmaSourceInput, VysmaSourceRef } from './model';
 import makeSubject from 'callbag-subject';
 
-export interface VysmaSourceConfig {
-  source: any;
-  // events: EventReference[];
-}
-
-export function createSource<C, R, E extends UnwrapEventReference<any>[]>(
-  sourceConfig: VysmaSourceInput<C, R, E>
-): VysmaSourceConfig {
+export function createSource<C, R>(sourceConfig: VysmaSourceInput<C, R>) {
   const subject = makeSubject();
   const eventEmitters: VysmaEventCallback<any>[] = sourceConfig.events.map(
     (eventEmitter) => makeEvent(eventEmitter, subject)
   );
-  // const eventReferences = sourceConfig.events.map((eventEmitter) => ({
-  //   sourceId: sourceConfig.id,
-  //   eventName: eventEmitter({}).eventName, // Simulate call to get the `eventName`
-  // }));
-  const makeSource = (config: C) => {
+  const makeSource = (config: C): VysmaSourceRef<R> => {
     const { current } = sourceConfig.init(config, eventEmitters);
-    return current;
+    return { current };
   };
-  return {
-    source: { id: sourceConfig.id, subject, makeSource },
-    // events: eventReferences,
-  };
+  return (config: C) => ({
+    id: sourceConfig.id,
+    ref: { subject: subject as any },
+    makeSource,
+    config,
+  });
 }
+
+export type VysmaSource<C, R> = ReturnType<typeof createSource<C, R>>;
+
+export type VysmaSourceConfig<C, R> = ReturnType<VysmaSource<C, R>>;

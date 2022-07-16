@@ -1,0 +1,9 @@
+diff --git a/node_modules/tallbag-for-each/readme.js b/node_modules/tallbag-for-each/readme.js
+index d71cc15..b5339cb 100644
+--- a/node_modules/tallbag-for-each/readme.js
++++ b/node_modules/tallbag-for-each/readme.js
+@@ -65,3 +65,4 @@ const forEach = (operation, shadowOperation) => source => {
+ };
+ 
+ module.exports = forEach;
++module.exports.default = forEach;
