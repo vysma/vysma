@@ -5,7 +5,7 @@
     "apps-react-e2e-example": "packages/apps/react-e2e-example",
     "apps-react-example": "packages/apps/react-example",
     "apps-vanilla-example": "packages/apps/vanilla-example",
-    "libs-kernel": "packages/libs/kernel",
-    "libs-vysma-react": "packages/libs/vysma-react"
+    "kernel": "packages/libs/kernel",
+    "vysma-react": "packages/libs/vysma-react"
   }
 }

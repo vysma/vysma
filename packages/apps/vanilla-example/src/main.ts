@@ -3,7 +3,7 @@ import {
   createSource,
   createTrigger,
   kernel,
-} from '@vysma/libs-kernel';
+} from '@vysma/kernel';
 
 interface ClockEvenEvent {
   evenData: number;
