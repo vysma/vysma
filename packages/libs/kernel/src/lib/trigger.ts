@@ -5,17 +5,19 @@ import filter from 'tallbag-filter';
 import forEach from 'tallbag-for-each';
 import pipe from 'callbag-pipe';
 
-// import combine from 'tallbag-combine';
-// import filter from 'tallbag-filter';
-// import pipe from 'callbag-pipe';
+export interface TriggerParams<T> {
+  event: any;
+}
 
-export interface TriggerConfiguration {
-  event: VysmaEventConfig<any>;
-  condition?: (payload: any) => boolean;
+export interface TriggerConfiguration<TEvent> {
+  event: VysmaEventConfig<TEvent>;
+  condition?: (payload: TEvent) => boolean;
   action: (payload: any) => void;
 }
 
-export function createTrigger(config: TriggerConfiguration) {
+export function createTrigger<T extends { config: TriggerConfiguration<any> }>(
+  config: TriggerConfiguration<T>
+) {
   const makeTrigger = (source: UnwrapSource<any>) => {
     const subscription = forEach(config.action)(
       pipe(
