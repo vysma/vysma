@@ -9,15 +9,23 @@ export interface EventPayload<TEvent, TContext> {
 export type EventFilter<T> = (value: T, context: IContext) => boolean;
 export type SetupFilter<TConfig, TEvents extends SourceEventArgs<any>> = (
   config: TConfig,
-  callback: SourceSetupCallback<TEvents>
+  callback: SourceSetupContext<TEvents>
 ) => void;
 export type MutationFilter<T> = (value: T) => void;
 
-type ExtractEventType<T> = T extends EventFilter<infer R> ? R : never;
-type ExtractSetupType<T> = T extends SetupFilter<infer TConfig, infer TCallback>
+export type ExtractEventType<T> = T extends EventFilter<infer R> ? R : never;
+export type ExtractEventRegistryType<T> = T extends EventRegistry<infer R>
+  ? R
+  : never;
+export type ExtractSetupType<T> = T extends SetupFilter<
+  infer TConfig,
+  infer TCallback
+>
   ? TConfig
   : never;
-type ExtractMutationType<T> = T extends MutationFilter<infer M> ? M : never;
+export type ExtractMutationType<T> = T extends MutationFilter<infer M>
+  ? M
+  : never;
 
 export interface EventRegistry<T> {
   kind: string;
@@ -38,8 +46,7 @@ export interface SourceMutationArgs<T> {
   [k: string]: (value: T, context: IContext) => void;
 }
 
-// export type SourceSetupCallback<TEvents extends SourceEventArgs<any>> = {
-export type SourceSetupCallback<TEvents> = {
+export type SourceSetupContext<TEvents> = {
   emit: {
     [Prop in keyof TEvents as `emit${Capitalize<string & Prop>}`]: (
       value: ExtractEventType<TEvents[Prop]>
@@ -51,7 +58,7 @@ export type SourceSetupArgs<
   TConfig,
   TEvents, // extends SourceEventArgs<any>,
   TRef
-> = (config: TConfig, callback: SourceSetupCallback<TEvents>) => TRef | void;
+> = (config: TConfig, context: SourceSetupContext<TEvents>) => TRef | void;
 
 export interface SourceArgs<
   TEvents extends SourceEventArgs<any>,

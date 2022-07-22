@@ -24,12 +24,6 @@ describe('vysma-event', () => {
           cleanup: (val: { force: boolean }, context) => {
             console.log(`Cleaned up!`);
           },
-          // cleanup: (payload: any, ref: any, state: any) => {
-          //   clearInterval(ref);
-          // },
-          // resume: () => {
-          //   console.log(`Interval resumed!`);
-          // },
         },
       },
       (duration: number, { emit }) => {
