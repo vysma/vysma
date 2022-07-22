@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "paths": {
+      "@vysma/interfaces": ["packages/libs/interfaces/src/index.ts"],
       "@vysma/kernel": ["packages/libs/kernel/src/index.ts"],
       "@vysma/react": ["packages/libs/vysma-react/src/index.ts"]
     }

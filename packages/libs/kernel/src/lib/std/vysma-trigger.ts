@@ -1,4 +1,4 @@
-import { EventRegistry, ExtractEventRegistryType } from './vysma-source';
+import { EventRegistry, ExtractEventRegistryType } from '@vysma/interfaces';
 export interface TriggerArgs<TEvent extends EventRegistry<any>> {
   event: TEvent;
   condition?: (payload: ExtractEventRegistryType<TEvent>) => boolean;
