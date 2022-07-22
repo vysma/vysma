@@ -7,10 +7,17 @@ export interface EventPayload<TEvent, TContext> {
 }
 
 export type EventFilter<T> = (value: T, context: IContext) => boolean;
-export type SetupFilter<C> = (config: C) => void;
+export type SetupFilter<TConfig, TEvents extends SourceEventArgs<any>> = (
+  config: TConfig,
+  callback: SourceSetupCallback<TEvents>
+) => void;
+export type MutationFilter<T> = (value: T) => void;
 
 type ExtractEventType<T> = T extends EventFilter<infer R> ? R : never;
-type ExtractSetupType<T> = T extends SetupFilter<infer C> ? C : never;
+type ExtractSetupType<T> = T extends SetupFilter<infer TConfig, infer TCallback>
+  ? TConfig
+  : never;
+type ExtractMutationType<T> = T extends MutationFilter<infer M> ? M : never;
 
 export interface EventRegistry<T> {
   kind: string;
@@ -18,32 +25,71 @@ export interface EventRegistry<T> {
   setup: (payload: T) => boolean;
 }
 
+export interface MutationRegistry<T> {
+  name: string;
+  setup: (payload: T) => T;
+}
+
 export interface SourceEventArgs<T> {
   [k: string]: (value: T, context: IContext) => boolean;
 }
 
-export type SourceSetupArgs<T> = (config: T) => void;
-
-export interface SourceArgs<
-  TSetup extends SourceSetupArgs<any>,
-  TEvent extends SourceEventArgs<any>
-> {
-  setup: TSetup;
-  events: TEvent;
+export interface SourceMutationArgs<T> {
+  [k: string]: (value: T, context: IContext) => void;
 }
 
-type SourceConfig<Events, TSetup> = {
+// export type SourceSetupCallback<TEvents extends SourceEventArgs<any>> = {
+export type SourceSetupCallback<TEvents> = {
+  emit: {
+    [Prop in keyof TEvents as `emit${Capitalize<string & Prop>}`]: (
+      value: ExtractEventType<TEvents[Prop]>
+    ) => void;
+  };
+};
+
+export type SourceSetupArgs<
+  TConfig,
+  TEvents, // extends SourceEventArgs<any>,
+  TRef
+> = (config: TConfig, callback: SourceSetupCallback<TEvents>) => TRef | void;
+
+export interface SourceArgs<
+  TEvents extends SourceEventArgs<any>,
+  TMutations extends SourceMutationArgs<any>
+  // TSetup extends SourceSetupArgs<any, TEvents, any>
+> {
+  events?: TEvents;
+  mutations?: TMutations;
+  // setup: TSetup;
+}
+
+type SourceConfig<Events, TSetup, TMutations> = {
+  // Dispatch || emitting functions
+  mutations: {
+    [Prop in keyof TMutations as `send${Capitalize<
+      string & Prop
+    >}`]: MutationRegistry<ExtractMutationType<TMutations[Prop]>>;
+  };
   events: {
     [Prop in keyof Events as `when${Capitalize<string & Prop>}`]: EventRegistry<
       ExtractEventType<Events[Prop]>
     >;
   };
-  setup: ExtractSetupType<TSetup>;
+  setup: (config: ExtractSetupType<TSetup>) => void;
 };
 
-export const createSource = <T extends SourceArgs<any, any>>(
-  params: T
-): SourceConfig<T['events'], T['setup']> => {
+export const createSource = <
+  TEvents extends SourceEventArgs<any>,
+  TMutations extends SourceMutationArgs<any>,
+  T extends SourceArgs<TEvents, TMutations>,
+  TSetup extends SourceSetupArgs<any, any, any>
+>(
+  params: T,
+  setup: TSetup extends SourceSetupArgs<infer TConfig, any, infer TRef>
+    ? SourceSetupArgs<TConfig, T['events'], TRef>
+    : any
+): SourceConfig<T['events'], TSetup, T['mutations']> => {
   // make EventSignal
+  console.log(params, setup);
   return {};
 };

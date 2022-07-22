@@ -5,7 +5,7 @@ import filter from 'tallbag-filter';
 import forEach from 'tallbag-for-each';
 import pipe from 'callbag-pipe';
 
-export interface TriggerParams<T> {
+export interface TriggerParams<T, TEvent extends T> {
   event: any;
 }
 
