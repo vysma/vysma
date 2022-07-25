@@ -1,14 +1,9 @@
 import { createSource } from './vysma-source';
 import { emitKeypressEvents } from 'readline';
 
-interface ClockEvenEvent {
-  kind: 'even';
-  evenData: number;
-}
-
-interface ClockOddEvent {
-  kind: 'odd';
-  oddData: number;
+interface ClockEvent {
+  value: number;
+  timestamp: Date;
 }
 
 describe('vysma-event', () => {
@@ -16,12 +11,13 @@ describe('vysma-event', () => {
     const sourceConfig = createSource(
       {
         events: {
-          even: (value: number) => value % 2 === 0,
-          odd: (value: number) => value % 2 !== 0,
-          timeElapsed: (value: Date) => true,
+          tiktok: (payload: ClockEvent) => ({
+            count: payload.value,
+            time: payload.timestamp,
+          }),
         },
         mutations: {
-          cleanup: (val: { force: boolean }, context) => {
+          cleanup: (val: { force: boolean }) => {
             console.log(`Cleaned up!`);
           },
         },
@@ -32,9 +28,13 @@ describe('vysma-event', () => {
 
         return setInterval(() => {
           i++;
-          emit.emitEven(i);
-          emit.emitOdd(i);
-          emit.emitTimeElapsed(new Date());
+          emit.emitTiktok({
+            value: i,
+            timestamp: new Date(),
+          });
+          // emit.emitEven(i);
+          // emit.emitOdd(i);
+          // emit.emitTimeElapsed(new Date());
           // emit(i++);
           console.log();
         }, duration);

@@ -6,6 +6,13 @@ export interface EventPayload<TEvent, TContext> {
   context: TContext;
 }
 
+export type EventMapping<T, K> = (
+  payload: T,
+  context: IContext
+) => {
+  [Prop in keyof K]: K[Prop];
+};
+
 export type EventFilter<T> = (value: T, context: IContext) => boolean;
 
 export interface EventRegistry<T> {
@@ -14,7 +21,9 @@ export interface EventRegistry<T> {
   setup: (payload: T) => boolean;
 }
 
-export type ExtractEventType<T> = T extends EventFilter<infer R> ? R : never;
+export type ExtractEventType<T> = T extends EventMapping<infer TPayload, any>
+  ? TPayload
+  : never;
 export type ExtractEventRegistryType<T> = T extends EventRegistry<infer R>
   ? R
   : never;

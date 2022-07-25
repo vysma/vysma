@@ -3,7 +3,7 @@ import { ExtractMutationType, MutationRegistry } from './mutation';
 
 import { IContext } from './context';
 
-export type SetupFilter<TConfig, TEvents extends SourceEventArgs<any>> = (
+export type SetupFilter<TConfig, TEvents extends SourceEventArgs<any, any>> = (
   config: TConfig,
   callback: SourceSetupContext<TEvents>
 ) => void;
@@ -18,8 +18,15 @@ export type ExtractSetupType<T> = T extends SetupFilter<
 export interface SourceMutationArgs<T> {
   [k: string]: (value: T, context: IContext) => void;
 }
-export interface SourceEventArgs<T> {
-  [k: string]: (value: T, context: IContext) => boolean;
+
+export type EventMapping<T, K> = (
+  payload: T,
+  context: IContext
+) => {
+  [Prop in keyof K]: K[Prop];
+};
+export interface SourceEventArgs<T, TMapping extends EventMapping<T, any>> {
+  [k: string]: EventMapping<T, TMapping>;
 }
 
 export type SourceSetupContext<TEvents> = {
@@ -30,13 +37,18 @@ export type SourceSetupContext<TEvents> = {
   };
 };
 
+export type EventReturnType<
+  T,
+  TMapping extends (payload: T) => TMapping
+> = ReturnType<TMapping>;
+
 export type SourceSetupArgs<TConfig, TEvents, TRef> = (
   config: TConfig,
   context: SourceSetupContext<TEvents>
 ) => TRef | void;
 
 export interface SourceArgs<
-  TEvents extends SourceEventArgs<any>,
+  TEvents extends SourceEventArgs<any, any>,
   TMutations extends SourceMutationArgs<any>
 > {
   events?: TEvents;

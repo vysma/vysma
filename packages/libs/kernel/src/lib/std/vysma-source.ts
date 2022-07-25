@@ -10,7 +10,7 @@ import {
 import { IContext } from './shared-interfaces';
 
 export const createSource = <
-  TEvents extends SourceEventArgs<any>,
+  TEvents extends SourceEventArgs<any, any>,
   TMutations extends SourceMutationArgs<any>,
   T extends SourceArgs<TEvents, TMutations>,
   TSetup extends SourceSetupArgs<any, any, any>
