@@ -11,9 +11,10 @@ describe('vysma-event', () => {
     const sourceConfig = createSource(
       {
         events: {
-          tiktok: (payload: ClockEvent) => ({
-            count: payload.value,
-            time: payload.timestamp,
+          tiktok: ({ value, timestamp }: ClockEvent) => ({
+            count: value,
+            time: timestamp,
+            evaluatedField: value > 10 ? true : false,
           }),
         },
         mutations: {
@@ -22,13 +23,13 @@ describe('vysma-event', () => {
           },
         },
       },
-      (duration: number, { emit }) => {
+      (duration: number, { emit: { emitTiktok } }) => {
         console.log(`Init interval: ${duration}`);
         let i = 0;
 
         return setInterval(() => {
           i++;
-          emit.emitTiktok({
+          emitTiktok({
             value: i,
             timestamp: new Date(),
           });
@@ -41,13 +42,13 @@ describe('vysma-event', () => {
       }
     );
     const {
-      events: { whenEven, whenOdd, whenTimeElapsed },
+      events: { whenTiktok },
       mutations: { sendCleanup },
       setup,
     } = sourceConfig;
     expect(sourceConfig).toHaveProperty('setup');
     expect(sourceConfig).toHaveProperty('events');
-    expect(whenEven).toEqual({});
+    expect(whenTiktok).toEqual({});
     expect(sendCleanup).toEqual({});
   });
 });

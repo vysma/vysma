@@ -1,7 +1,12 @@
-import { EventRegistry, ExtractEventType } from './event';
+import {
+  EventRegistry,
+  EventSetupEval,
+  ExtractEventMappingType,
+  ExtractEventType,
+} from './event';
 import { ExtractMutationType, MutationRegistry } from './mutation';
 
-import { IContext } from './context';
+import { VysmaContext } from './context';
 
 export type SetupFilter<TConfig, TEvents extends SourceEventArgs<any, any>> = (
   config: TConfig,
@@ -16,18 +21,18 @@ export type ExtractSetupType<T> = T extends SetupFilter<
   : never;
 
 export interface SourceMutationArgs<T> {
-  [k: string]: (value: T, context: IContext) => void;
+  [k: string]: (value: T, context: VysmaContext) => void;
 }
 
-export type EventMapping<T, K> = (
-  payload: T,
-  context: IContext
-) => {
-  [Prop in keyof K]: K[Prop];
-};
-export interface SourceEventArgs<T, TMapping extends EventMapping<T, any>> {
-  [k: string]: EventMapping<T, TMapping>;
-}
+// export interface SourceEventArgs<T, TMapping extends EventMapping<T, any>>
+//   extends Record<string, EventMapping<T, TMapping>> {
+//   // [k: string]: EventMapping<T, TMapping>;
+// }
+
+export type SourceEventArgs<
+  T,
+  TEventSetupEval extends EventSetupEval<T, any>
+> = Record<string, TEventSetupEval>;
 
 export type SourceSetupContext<TEvents> = {
   emit: {
@@ -63,8 +68,9 @@ export type SourceConfig<Events, TSetup, TMutations> = {
   };
   events: {
     [Prop in keyof Events as `when${Capitalize<string & Prop>}`]: EventRegistry<
-      ExtractEventType<Events[Prop]>
+      ExtractEventType<Events[Prop]>,
+      ExtractEventMappingType<Events[Prop]>
     >;
   };
-  setup: (config: ExtractSetupType<TSetup>) => void;
+  setup?: (config: ExtractSetupType<TSetup>) => void;
 };
