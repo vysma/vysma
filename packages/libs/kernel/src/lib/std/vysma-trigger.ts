@@ -1,16 +1,21 @@
-import { EventRegistry, ExtractEventRegistryType } from '@vysma/interfaces';
-export interface TriggerArgs<TEvent extends EventRegistry<any, any>> {
+import {
+  EventPayload,
+  EventRegistered,
+  EventRegistry,
+  ExtractEventRegistryType,
+} from '@vysma/interfaces';
+export interface TriggerArgs<TEvent extends EventRegistered<any, any>> {
   event: TEvent;
-  condition?: (payload: ExtractEventRegistryType<TEvent>) => boolean;
-  action: (payload: ExtractEventRegistryType<TEvent>) => void | any;
+  condition?: (payload: EventPayload<TEvent>) => boolean;
+  action: (payload: EventPayload<TEvent>) => void | any;
 }
 
 export type TriggerConfig<TEvent extends EventRegistry<any, any>> = {
   event: ExtractEventRegistryType<TEvent>;
 };
 
-export const createTrigger = <TEvent extends EventRegistry<any, any>>(
+export const createTrigger = <TEvent extends EventRegistered<any, any>>(
   args: TriggerArgs<TEvent>
-): TriggerConfig<TEvent> => {
+) => {
   return { event: 0 };
 };

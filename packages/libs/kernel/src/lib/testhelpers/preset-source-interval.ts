@@ -51,8 +51,10 @@ export const sourceConfig = createSource(
 export const { whenTiktok } = sourceConfig.events;
 export const { sendCleanup } = sourceConfig.mutations;
 
-const sampleTrigger = createTrigger({
-  event: whenTiktok({ compute: true }),
-  condition: (payload) => true,
+const whenTiktokElapsed10Seconds = whenTiktok({ compute: true });
+
+export const sampleTrigger = createTrigger({
+  event: whenTiktokElapsed10Seconds,
+  condition: ({ named: { count } }) => count > 10,
   action: (data) => console.log(`Hello World: ${data}`),
 });

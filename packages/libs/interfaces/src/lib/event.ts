@@ -1,11 +1,5 @@
 import { VysmaContext } from './context';
 
-// export interface EventPayload<TEvent, TContext> {
-//   sourceId: string;
-//   payload: TEvent;
-//   context: TContext;
-// }
-
 export interface EventRegistryOptions {
   /**
    * Should the Event resolver compute the mapping or not
@@ -57,8 +51,22 @@ export type ExtractEventRegistryType<T> = T extends EventRegistry<
   ? EventPackedType<Type, Mapping>
   : never;
 
-export type EventRegistry<T, TMap> = (options?: EventRegistryOptions) => {
+export type EventRegistered<T, M> = {
   kind: string;
   // When kernel map with a source, it will pipe the condition to filter specific events
-  register: (payload: T, context: VysmaContext) => TMap;
+  register: (payload: T, context: VysmaContext) => M;
 };
+
+export type EventPayload<T> = T extends EventRegistered<
+  infer Type,
+  infer Mapping
+>
+  ? {
+      raw: Type;
+      named: Mapping;
+    }
+  : never;
+
+export type EventRegistry<T, M extends EventNamedMapping<any>> = (
+  options?: EventRegistryOptions
+) => EventRegistered<T, M>;
