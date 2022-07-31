@@ -1,12 +1,15 @@
 import { VysmaContext } from './context';
 
-export interface EventRegistryOptions {
+export type EventRegistryWhere<T extends EventNamedMapping<any>> = {
+  // [Prop in keyof T]: (value: T[Prop]) => boolean;
+  [Prop in keyof T]?: (value: T[Prop]) => boolean;
+};
+
+export interface EventRegistryOptions<T extends EventNamedMapping<any>> {
   /**
-   * Should the Event resolver compute the mapping or not
-   * Setting this option will allow the VysmaTrigger access computed fields in the following context
-   * @default false
+   * Conditional select an appropriate event
    */
-  compute?: boolean;
+  where?: EventRegistryWhere<T>;
 }
 
 export type EventNamedMapping<K extends Record<string, any>> = {
@@ -68,5 +71,5 @@ export type EventPayload<T> = T extends EventRegistered<
   : never;
 
 export type EventRegistry<T, M extends EventNamedMapping<any>> = (
-  options?: EventRegistryOptions
+  options?: EventRegistryOptions<M>
 ) => EventRegistered<T, M>;

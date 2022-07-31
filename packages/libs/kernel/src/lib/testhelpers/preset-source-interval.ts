@@ -51,7 +51,11 @@ export const sourceConfig = createSource(
 export const { whenTiktok } = sourceConfig.events;
 export const { sendCleanup } = sourceConfig.mutations;
 
-const whenTiktokElapsed10Seconds = whenTiktok({ compute: true });
+const largerThan = (val: number) => (comp: number) => comp > val;
+
+const whenTiktokElapsed10Seconds = whenTiktok({
+  where: { count: largerThan(10) },
+});
 
 export const sampleTrigger = createTrigger({
   event: whenTiktokElapsed10Seconds,
