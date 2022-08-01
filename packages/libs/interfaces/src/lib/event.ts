@@ -1,6 +1,6 @@
 import { VysmaContext } from './context';
 
-export type EventRegistryWhere<T extends EventNamedMapping<any>> = {
+export type EventRegistryWhereOptions<T extends EventNamedMapping<any>> = {
   // [Prop in keyof T]: (value: T[Prop]) => boolean;
   [Prop in keyof T]?: (value: T[Prop]) => boolean;
 };
@@ -9,7 +9,7 @@ export interface EventRegistryOptions<T extends EventNamedMapping<any>> {
   /**
    * Conditional select an appropriate event
    */
-  where?: EventRegistryWhere<T>;
+  where?: EventRegistryWhereOptions<T>;
 }
 
 export type EventNamedMapping<K extends Record<string, any>> = {

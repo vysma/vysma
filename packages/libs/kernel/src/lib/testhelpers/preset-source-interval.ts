@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { createSource } from '../std/vysma-source';
 import { createTrigger } from '../std/vysma-trigger';
 
@@ -7,7 +8,8 @@ export interface ClockEventPayload {
 }
 
 export interface ClockEventNames {
-  count: number;
+  /** Counting value */
+  counter: number;
   time: Date;
   evaluatedField: boolean;
 }
@@ -21,7 +23,7 @@ export const sourceConfig = createSource(
     // Predefine list of emitable events
     events: {
       tiktok: ({ value, timestamp }: ClockEventPayload): ClockEventNames => ({
-        count: value,
+        counter: value,
         time: timestamp,
         evaluatedField: value > 10 ? true : false,
       }),
@@ -51,14 +53,10 @@ export const sourceConfig = createSource(
 export const { whenTiktok } = sourceConfig.events;
 export const { sendCleanup } = sourceConfig.mutations;
 
-const largerThan = (val: number) => (comp: number) => comp > val;
-
-const whenTiktokElapsed10Seconds = whenTiktok({
-  where: { count: largerThan(10) },
-});
-
 export const sampleTrigger = createTrigger({
-  event: whenTiktokElapsed10Seconds,
-  condition: ({ named: { count } }) => count > 10,
+  event: whenTiktok({
+    where: { counter: R.gt(10) },
+  }),
+  condition: ({ named: { counter: count } }) => count > 10,
   action: (data) => console.log(`Hello World: ${data}`),
 });
