@@ -3,7 +3,6 @@ import {
   ClockEventPayload,
   TIKTOK_EVENT,
   sampleContext,
-  sourceConfig,
   whenTiktok,
 } from '../testhelpers/preset-source-interval';
 
@@ -30,6 +29,8 @@ describe('vysma-event', () => {
   it('should check register filter function', () => {
     const eventRegistry = whenTiktok({ where: { counter: (v) => v > 10 } });
     expect(eventRegistry).toHaveProperty('filter');
-    expect(eventRegistry.filter!.counter!(11)).toEqual(true);
+    if (eventRegistry.filter) {
+      expect(eventRegistry.filter.counter!(11)).toEqual(true);
+    }
   });
 });

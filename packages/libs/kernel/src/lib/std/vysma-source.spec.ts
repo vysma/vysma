@@ -1,12 +1,13 @@
 import {
+  TIKTOK_EVENT,
   sourceConfig,
-  whenTiktok,
 } from '../testhelpers/preset-source-interval';
 
-describe('vysma-event', () => {
-  it('should create new source type', () => {
-    expect(sourceConfig).toHaveProperty('register');
+import { formatEventName } from './vysma-source';
+
+describe('vysma-source', () => {
+  it('should create event register', () => {
     expect(sourceConfig).toHaveProperty('events');
-    // expect(sendCleanup).toEqual({});
+    expect(sourceConfig.events).toHaveProperty(formatEventName(TIKTOK_EVENT));
   });
 });

@@ -11,10 +11,10 @@ import { camelCase, capitalCase, capitalCaseTransform } from 'change-case';
 import { makeEventRegistry } from './vysma-event';
 import makeSubject from 'callbag-subject';
 
-const formatEventName = (eventName: string) =>
+export const formatEventName = (eventName: string) =>
   camelCase(`when${capitalCase(eventName)}`);
 
-const makeSourceSetup = <TConfig, TEvents, TRef>(
+export const makeSourceSetup = <TConfig, TEvents, TRef>(
   setupCallback: SourceSetupArgs<TConfig, TEvents, TRef>
 ) => {
   const subject = makeSubject();
