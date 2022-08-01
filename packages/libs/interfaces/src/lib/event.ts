@@ -1,15 +1,14 @@
 import { VysmaContext } from './context';
 
 export type EventRegistryWhereOptions<T extends EventNamedMapping<any>> = {
-  // [Prop in keyof T]: (value: T[Prop]) => boolean;
-  [Prop in keyof T]?: (value: T[Prop]) => boolean;
+  [Prop in keyof T]: (value: T[Prop]) => boolean;
 };
 
 export interface EventRegistryOptions<T extends EventNamedMapping<any>> {
   /**
-   * Conditional select an appropriate event
+   * Conditional filter an appropriate event payload
    */
-  where?: EventRegistryWhereOptions<T>;
+  where?: Partial<EventRegistryWhereOptions<T>>;
 }
 
 export type EventNamedMapping<K extends Record<string, any>> = {
@@ -58,6 +57,7 @@ export type EventRegistered<T, M> = {
   kind: string;
   // When kernel map with a source, it will pipe the condition to filter specific events
   register: (payload: T, context: VysmaContext) => M;
+  filter?: Partial<EventRegistryWhereOptions<M>>;
 };
 
 export type EventPayload<T> = T extends EventRegistered<

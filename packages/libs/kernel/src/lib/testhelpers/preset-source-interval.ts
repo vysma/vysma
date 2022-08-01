@@ -1,7 +1,12 @@
-import R from 'ramda';
+import { VysmaContext } from '@vysma/interfaces';
 import { createSource } from '../std/vysma-source';
 import { createTrigger } from '../std/vysma-trigger';
+import { gt } from 'ramda';
 
+export const sampleContext: VysmaContext = {
+  state: {},
+  ref: {},
+};
 export interface ClockEventPayload {
   value: number;
   timestamp: Date;
@@ -18,11 +23,16 @@ export interface CleanupProps {
   force: boolean;
 }
 
+export const TIKTOK_EVENT = 'tiktok';
+
 export const sourceConfig = createSource(
   {
     // Predefine list of emitable events
     events: {
-      tiktok: ({ value, timestamp }: ClockEventPayload): ClockEventNames => ({
+      [TIKTOK_EVENT]: ({
+        value,
+        timestamp,
+      }: ClockEventPayload): ClockEventNames => ({
         counter: value,
         time: timestamp,
         evaluatedField: value > 10 ? true : false,
@@ -55,7 +65,7 @@ export const { sendCleanup } = sourceConfig.mutations;
 
 export const sampleTrigger = createTrigger({
   event: whenTiktok({
-    where: { counter: R.gt(10) },
+    where: { counter: gt(10) },
   }),
   condition: ({ named: { counter: count } }) => count > 10,
   action: (data) => console.log(`Hello World: ${data}`),

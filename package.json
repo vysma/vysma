@@ -22,7 +22,8 @@
     "tallbag-for-each": "1.0.0",
     "tallbag-share": "1.0.0",
     "tallbag-take": "1.0.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "xstate": "4.32.1"
   },
   "devDependencies": {
     "@nrwl/cli": "14.3.6",

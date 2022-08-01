@@ -72,5 +72,5 @@ export type SourceConfig<Events, TSetup, TMutations> = {
       ExtractEventMappingType<Events[Prop]>
     >;
   };
-  setup?: (config: ExtractSetupType<TSetup>) => void;
+  register: (config: ExtractSetupType<TSetup>) => void;
 };
