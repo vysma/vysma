@@ -26,21 +26,13 @@ export interface SourceMutationArgs<T> {
   [k: string]: (value: T, context: VysmaContext) => void;
 }
 
-// export interface SourceEventArgs<T, TMapping extends EventMapping<T, any>>
-//   extends Record<string, EventMapping<T, TMapping>> {
-//   // [k: string]: EventMapping<T, TMapping>;
-// }
-
 export type SourceEventArgs<
   T,
   TEventSetupEval extends EventSetupEval<T, any>
 > = Record<string, TEventSetupEval>;
 
 type SetupEmitter<T extends SourceEventArgs<any, any>> = {
-  [Prop in keyof T]: EventEmitter<ExtractEventType<T[Prop]>>;
-  // [Prop in keyof T as `emit${Capitalize<string & Prop>}`]: EventEmitter<
-  //   ExtractEventType<T[Prop]>
-  // >;
+  [Prop in keyof T]: EventEmitter<T[Prop]>;
 };
 
 export type SourceSetupContext<T extends SourceEventArgs<any, any>> = {

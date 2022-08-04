@@ -62,7 +62,7 @@ export const sourceConfig = createSource(
     emit.other();
     return setInterval(() => {
       i++;
-      emit[TIKTOK_EVENT]({
+      tiktok({
         value: i,
         timestamp: new Date(),
       });

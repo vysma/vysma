@@ -1,4 +1,5 @@
 import { Callbag } from './callbag';
+import { NullFunc } from './utils';
 import { VysmaContext } from './context';
 
 export type EventRegistryWhereOptions<T extends EventNamedMapping<any>> = {
@@ -24,7 +25,6 @@ export type EventSetupEval<T, K extends EventNamedMapping<any>> = (
   context?: VysmaContext
 ) => K;
 
-type NullFunc = () => null;
 export type EventEmitter<T> = T extends NullFunc
   ? () => void
   : T extends EventSetupEval<infer TPayload, any>
