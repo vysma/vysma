@@ -23,12 +23,20 @@ export interface CleanupProps {
   force: boolean;
 }
 
+export interface SourceProps {
+  duration: number;
+}
+
 export const TIKTOK_EVENT = 'tiktok';
+export const OTHER_EVENT = 'other';
 
 export const sourceConfig = createSource(
   {
     // Predefine list of emitable events
     events: {
+      /**
+       * Emit new tiktok event
+       */
       [TIKTOK_EVENT]: ({
         value,
         timestamp,
@@ -37,6 +45,7 @@ export const sourceConfig = createSource(
         time: timestamp,
         evaluatedField: value > 10 ? true : false,
       }),
+      [OTHER_EVENT]: () => null,
     },
     // Predefine list of mutable function
     mutations: {
@@ -45,22 +54,23 @@ export const sourceConfig = createSource(
       },
     },
   },
-  (duration: number, { emit: { emitTiktok } }) => {
-    console.log(`Init interval: ${duration}`);
+  (props: SourceProps, { emit }) => {
+    console.log(`Init interval: ${props.duration}`);
     let i = 0;
+    const { tiktok } = emit;
 
+    emit.other();
     return setInterval(() => {
       i++;
-      emitTiktok({
+      emit[TIKTOK_EVENT]({
         value: i,
         timestamp: new Date(),
       });
-      console.log();
-    }, duration);
+    }, props.duration);
   }
 );
 
-export const { whenTiktok } = sourceConfig.events;
+export const { whenTiktok, whenOther } = sourceConfig.events;
 export const { sendCleanup } = sourceConfig.mutations;
 
 export const sampleTrigger = createTrigger({

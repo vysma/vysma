@@ -1,3 +1,4 @@
+import { Callbag } from './callbag';
 import { VysmaContext } from './context';
 
 export type EventRegistryWhereOptions<T extends EventNamedMapping<any>> = {
@@ -20,8 +21,15 @@ export type EventNamedMapping<K extends Record<string, any>> = {
  */
 export type EventSetupEval<T, K extends EventNamedMapping<any>> = (
   payload: T,
-  context: VysmaContext
+  context?: VysmaContext
 ) => K;
+
+type NullFunc = () => null;
+export type EventEmitter<T> = T extends NullFunc
+  ? () => void
+  : T extends EventSetupEval<infer TPayload, any>
+  ? (payload: TPayload) => void
+  : never;
 
 export type EventSetupPayload<T, TMapping> = (
   payload: T,
@@ -54,6 +62,7 @@ export type ExtractEventRegistryType<T> = T extends EventRegistry<
   : never;
 
 export type EventRegistered<T, M> = {
+  source: Callbag<any, any>;
   kind: string;
   // When kernel map with a source, it will pipe the condition to filter specific events
   register: (payload: T, context: VysmaContext) => M;

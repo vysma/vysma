@@ -1,22 +1,19 @@
 import {
+  Callbag,
   EventNamedMapping,
-  EventPayload,
-  EventRegistered,
   EventRegistry,
   EventRegistryOptions,
   EventSetupEval,
   VysmaContext,
 } from '@vysma/interfaces';
 
-import { Callbag } from '../callbag';
-
 export const makeEventEmitter =
-  <T, M extends EventNamedMapping<any>, ER extends EventRegistered<T, M>>(
-    eventRegistry: ER,
-    subject: Callbag<any, any>
+  <T, M extends EventNamedMapping<any>, E extends EventSetupEval<T, M>>(
+    eventRegister: E,
+    subject: Callbag<T, any>
   ) =>
   (payload: T, context: VysmaContext) =>
-    subject(1, eventRegistry.register(payload, context));
+    subject(1, eventRegister(payload, context));
 
 /**
  *
@@ -30,10 +27,12 @@ export const makeEventRegistry = <
   TSetup extends EventSetupEval<T, M>
 >(
   eventName: string,
-  eventConfigSetup: TSetup
+  eventConfigSetup: TSetup,
+  source: Callbag<any, any>
 ): EventRegistry<T, M> => {
   const eventRegistry = (options: EventRegistryOptions<M> | undefined) => {
     return {
+      source,
       kind: eventName,
       register: (payload: T, context: VysmaContext) =>
         eventConfigSetup(payload, context),
