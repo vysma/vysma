@@ -1,4 +1,5 @@
 import {
+  ConditionalNode,
   EventPayload,
   EventRegistered,
   EventRegistry,
@@ -6,7 +7,8 @@ import {
 } from '@vysma/interfaces';
 export interface TriggerArgs<TEvent extends EventRegistered<any, any>> {
   event: TEvent;
-  condition?: (payload: EventPayload<TEvent>) => boolean;
+  // condition?: (payload: EventPayload<TEvent>) => boolean;
+  condition?: ConditionalNode<EventPayload<TEvent>>;
   action: (payload: EventPayload<TEvent>) => void | any;
 }
 

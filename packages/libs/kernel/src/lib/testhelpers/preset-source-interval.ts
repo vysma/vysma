@@ -1,7 +1,7 @@
-import { VysmaContext } from '@vysma/interfaces';
+import { VysmaContext, is } from '@vysma/interfaces';
 import { createSource } from '../std/vysma-source';
 import { createTrigger } from '../std/vysma-trigger';
-import { gt } from 'ramda';
+import { gt, is } from 'ramda';
 
 export const sampleContext: VysmaContext = {
   state: {},
@@ -12,11 +12,21 @@ export interface ClockEventPayload {
   timestamp: Date;
 }
 
+export enum TRIGGERING_PROPS {
+  /**
+   * The counter
+   */
+  COUNTER,
+  /**
+   * The timestamp when the event was triggered
+   */
+  TIME,
+}
+
 export interface ClockEventNames {
   /** Counting value */
-  counter: number;
-  time: Date;
-  evaluatedField: boolean;
+  [TRIGGERING_PROPS.COUNTER]: number;
+  [TRIGGERING_PROPS.TIME]: Date;
 }
 
 export interface CleanupProps {
@@ -41,9 +51,8 @@ export const sourceConfig = createSource(
         value,
         timestamp,
       }: ClockEventPayload): ClockEventNames => ({
-        counter: value,
-        time: timestamp,
-        evaluatedField: value > 10 ? true : false,
+        [TRIGGERING_PROPS.COUNTER]: value,
+        [TRIGGERING_PROPS.TIME]: timestamp,
       }),
       [OTHER_EVENT]: () => null,
     },
@@ -75,8 +84,9 @@ export const { sendCleanup } = sourceConfig.mutations;
 
 export const sampleTrigger = createTrigger({
   event: whenTiktok({
-    where: { counter: gt(10) },
+    where: { [TRIGGERING_PROPS.COUNTER]: gt(10) },
   }),
-  condition: ({ named: { counter: count } }) => count > 10,
+  // condition: ({ named: { counter: count } }) => count > 10,
+  condition: is(TRIGGERING_PROPS.COUNTER, 100),
   action: (data) => console.log(`Hello World: ${data}`),
 });
