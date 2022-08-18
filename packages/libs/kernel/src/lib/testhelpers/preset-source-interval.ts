@@ -2,6 +2,7 @@ import { VysmaContext, check, greaterThan, lessThan } from '@vysma/interfaces';
 
 import { createSource } from '../std/vysma-source';
 import { createTrigger } from '../std/vysma-trigger';
+import { either } from 'ramda';
 
 export const sampleContext: VysmaContext = {
   state: {},
@@ -87,5 +88,6 @@ export const sampleTrigger = createTrigger({
     where: { [TRIGGERING_EVENT.COUNTER]: greaterThan(10) },
   }),
   condition: check(TRIGGERING_EVENT.COUNTER, lessThan(100)),
+  // condition: either()
   action: (data) => console.log(`Hello World: ${data}`),
 });

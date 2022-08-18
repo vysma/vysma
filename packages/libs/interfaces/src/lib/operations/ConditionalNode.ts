@@ -1,6 +1,36 @@
 import { EventPayload } from '../event';
 
+export type Pred<T extends any[] = any[]> = (...a: T) => boolean;
+
 export type ConditionalNode<T> = (payload: EventPayload<T>) => boolean;
+
+type GetExpressionValue<T extends EventPayload<any>, R> = (
+  payload: T
+) => (...args: any[]) => R;
+
+type BooleanExpression<
+  T extends EventPayload<any>,
+  G extends GetExpressionValue<T, any>,
+  K
+> = (getter: G) => (args: Pred<T>) => (value: K) => boolean;
+
+// type ConditionalExpression<
+//   V,
+//   EV,
+//   T extends EventPayload<any>,
+//   G extends (payload: T) => V,
+//   E extends (value: V) => EV
+// > = (
+//   getter: G,
+//   expression: E
+// ) => (inputValue: V, expressionValue: EV) => boolean;
+
+export const either = <T extends EventPayload<any>>(
+  firstExpression: BooleanExpression<T>,
+  secondExpression: BooleanExpression<T>
+): ConditionalExpression<T> => {
+  const evaluate = (getter: any, expression: any) => (inputValue: any) => {};
+};
 
 export type ConditionalWithProps<
   T extends EventPayload<any>,
